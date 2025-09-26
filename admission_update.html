@@ -1,0 +1,190 @@
+{% include 'header_server.html' %}
+<div class="card-header bg-light"><strong>Update Admission Details</strong></div>
+<div class="card-body text-nowrap pt-5">
+
+  <form action="" method="post" enctype="multipart/form-data">
+    {%csrf_token%}
+    <div class="row">
+        <div class="col-lg-6">
+          <label for="">Course</label>  
+          <select class="form-select form-select-sm mb-3" name="course" id="course">
+            <option>{{ob.course}}</option>
+            
+            <option>UG</option>
+            <option>PG</option>
+            
+          </select>
+          <label for="">Degree</label>  
+          <select class="form-select form-select-sm mb-3" name="deg" id="deg">
+            <option>{{ob.deg}}</option>
+          </select>
+          <label for="">Department</label>  
+          <select class="form-select form-select-sm mb-3" name="dept" id="dept">
+            <option>{{ob.dept}}</option>
+          </select>
+          <label for="">Student Name</label>  
+        <input name="sname" value="{{ob.sname}}" type="text" class="form-control form-control-sm mb-3">
+        <label for="">Gender</label>  
+        <select class="form-select form-select-sm mb-3" name="gender">
+            <option>{{ob.gender}}</option>
+            <option>Male</option>
+            <option>Female</option>
+            
+        </select>
+        
+        <label for="">Father Name</label>  
+        <input name="fname" value="{{ob.fname}}" type="text" class="form-control form-control-sm mb-3">
+        <label for="">Date-Of-Birth</label>  
+        <input name="dob" value="{{ob.dob}}" type="date" class="form-control form-control-sm mb-3">
+        <label for="">Address</label>  
+        <textarea name="addr" class="form-control form-control-sm mb-3" id="">{{ob.addr}}</textarea>
+        
+        
+        </div>
+        <div class="col-lg-6">
+            <label for="">E-mail ID</label>  
+        <input name="email" value="{{ob.email}}" type="text" class="form-control form-control-sm mb-3">
+        <label for="">Contact Number</label>  
+        <input name="cno" value="{{ob.cno}}" type="text" class="form-control form-control-sm mb-3">
+        <label for="">+2 Group</label>  
+        <select class="form-select form-select-sm mb-3" name="pgroup">
+            <option>{{ob.pgroup}}</option>
+            <option>Maths</option>
+            <option>Computer Science</option>
+            <option>Accountancy</option>
+            <option>Science</option>
+            
+        </select>
+        <label for="">Caste</label>  
+        <select class="form-select form-select-sm mb-3" name="caste">
+            <option>{{ob.caste}}</option>
+            <option>BC</option>
+            <option>MBC</option>
+            <option>BCM</option>
+            <option>SC</option>
+            <option>ST</option>
+            
+            
+        </select>
+        
+        
+        <label for="">Religion</label>  
+        <select class="form-select form-select-sm mb-3" name="rel">
+            <option>{{ob.rel}}</option>
+            <option>Hindu</option>
+            <option>Christian</option>
+            <option>Muslim</option>
+          
+        </select>
+        <label for="">Batch</label>  
+          <select class="form-select form-select-sm mb-3" name="bat" id="bat">
+            <option>{{ob.bat}}</option>
+          </select>
+       
+        <label for="">Image</label>  
+        <input name="img" src="../media/{{ob.img}}" type="file" class="form-control form-control-sm mb-3">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        
+        
+    </div>
+  </form>
+</div>
+{% include 'footer.html' %}
+{% for msg in messages %}
+<script>
+  alert("{{ msg }}");
+</script>
+{% endfor %}
+<script type="text/javascript">
+    // alert("Welcome")
+    $(document).ready(function() {
+        // console.log("p")
+        $('#course').change(function() {
+            // var course = $(this).attr('course');
+          
+            var course = document.getElementById("course").value
+            
+            console.log("course -"+course)
+  
+                $.ajax({
+                    url: "/checkCourse",
+                    data: {
+                        
+                        'course': course,
+                       
+                        
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        // alert(data.deg)
+                        console.log(data.data)
+                        var opt="<option>-Select-</option>"
+                        for(let i=0;i<data.data.length;i++){
+                            console.log(data.data[i])
+                            opt=opt+"<option>"+data.data[i]+"</option>";
+                        }
+                        document.getElementById("deg").innerHTML=opt;
+                        opt="<option>-Select-</option>"
+                        let k=0;
+                        if(course=="UG")
+                        {
+                            k=3
+                        }
+                        else{
+                            k=2
+                        }
+                        for(let i=2023;i<=2030;i++){
+                            
+                            opt=opt+"<option>"+i+"-"+ (i+k)+"</option>";
+                        }
+                        document.getElementById("bat").innerHTML=opt;
+                    },
+                    error: function(error) {
+                        
+                    }
+                });
+          
+        });
+        $('#deg').change(function() {
+            // var course = $(this).attr('course');
+          
+            var course = document.getElementById("course").value
+            var deg = document.getElementById("deg").value
+            
+            console.log("course -"+course)
+  
+                $.ajax({
+                    url: "/checkDegree",
+                    data: {
+                        
+                        'course': course,
+                        'deg': deg,
+                        
+                       
+                        
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        // alert(data.deg)
+                        console.log(data.data)
+                        var opt="<option>-Select-</option>"
+                        for(let i=0;i<data.data.length;i++){
+                            console.log(data.data[i])
+                            opt=opt+"<option>"+data.data[i]+"</option>";
+                        }
+                        document.getElementById("dept").innerHTML=opt;
+                        if (data.name) {
+                            $('#dept').html('<h3>You selected: ' + data.name + '</h3>');
+                        }
+                    },
+                    error: function(error) {
+                        
+                    }
+                });
+          
+        });
+        
+      });
+  
+  </script>

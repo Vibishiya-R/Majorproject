@@ -1,0 +1,84 @@
+{% include 'header_server.html' %}
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-light">
+            <strong>Update Department</strong>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                 
+                <div class="mb-3 text-center">
+                    <label for="course" class="form-label">Course</label>
+                    <select class="form-control" id="course" name="course">
+                        <option selected>{{ ob.course }}</option>
+                        <option>UG</option>
+                        <option>PG</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="deg" class="form-label">Degree</label>
+                    <input list="degreeList" class="form-control" id="deg" name="deg" value="{{ ob.deg }}" required>
+                    <datalist id="degreeList">
+                        <option selected>{{ ob.deg }}</option>
+                    </datalist>
+                </div>
+
+                <div class="mb-3">
+                    <label for="dept" class="form-label">Department</label>
+                    <input type="text" class="form-control" id="dept" name="dept" value="{{ ob.dept }}" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update</button>
+                <a href="{% url 'department_list' %}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% include 'footer.html' %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#course').change(function() {
+            var course = document.getElementById("course").value;
+            console.log("Selected Course: " + course);
+
+            $.ajax({
+                url: "/checkCourse",
+                data: { 'course': course },
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data.data);
+                    var opt = "<option>-Select Degree-</option>";
+                    for (let i = 0; i < data.data.length; i++) {
+                        opt += "<option>" + data.data[i] + "</option>";
+                    }
+                    document.getElementById("deg").innerHTML = opt;
+                }
+            });
+        });
+
+        $('#deg').change(function() {
+            var course = document.getElementById("course").value;
+            var deg = document.getElementById("deg").value;
+            console.log("Selected Course: " + course + ", Degree: " + deg);
+
+            $.ajax({
+                url: "/checkDegree",
+                data: { 'course': course, 'deg': deg },
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data.data);
+                    var opt = "<option>-Select Department-</option>";
+                    for (let i = 0; i < data.data.length; i++) {
+                        opt += "<option>" + data.data[i] + "</option>";
+                    }
+                    document.getElementById("dept").innerHTML = opt;
+                }
+            });
+        });
+    });
+</script>

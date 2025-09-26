@@ -1,0 +1,186 @@
+{% include 'header_server.html' %}
+<div class="card-header bg-light"><strong>Add New Admission</strong></div>
+<div class="card-body text-nowrap pt-5">
+
+  <form action="" method="post" enctype="multipart/form-data">
+    {%csrf_token%}
+    <div class="row">
+        <div class="col-lg-6">
+          <label for="">Course</label>  
+          <select class="form-select form-select-sm mb-3" name="course" id="course">
+            <option>-Select-</option>
+            
+            <option>UG</option>
+            <option>PG</option>
+            
+          </select>
+          <label for="">Degree</label>  
+          <select class="form-select form-select-sm mb-3" name="deg" id="deg">
+            
+          </select>
+          <label for="">Department</label>  
+          <select class="form-select form-select-sm mb-3" name="dept" id="dept">
+            
+          </select>
+          <label for="">Student Name</label>  
+        <input name="sname" type="text" class="form-control form-control-sm mb-3">
+        <label for="">Gender</label>  
+        <select class="form-select form-select-sm mb-3" name="gender">
+            <option>Male</option>
+            <option>Female</option>
+            
+        </select>
+        
+        <label for="">Father Name</label>  
+        <input name="fname" type="text" class="form-control form-control-sm mb-3">
+        <label for="">Date-Of-Birth</label>  
+        <input name="dob" type="date" class="form-control form-control-sm mb-3">
+        <label for="">Address</label>  
+        <textarea name="addr" class="form-control form-control-sm mb-3" id=""></textarea>
+        
+        
+        </div>
+        <div class="col-lg-6">
+            <label for="">E-mail ID</label>  
+        <input name="email" type="email" class="form-control form-control-sm mb-3">
+        <label for="">Contact Number</label>  
+        <input name="cno" type="number" min="1111111111" max="9999999999" class="form-control form-control-sm mb-3">
+        <label for="">+2 Group</label>  
+        <select class="form-select form-select-sm mb-3" name="pgroup">
+            <option>Maths</option>
+            <option>Computer Science</option>
+            <option>Accountancy</option>
+            <option>Science</option>
+            
+        </select>
+        <label for="">Caste</label>  
+        <select class="form-select form-select-sm mb-3" name="caste">
+            <option>BC</option>
+            <option>MBC</option>
+            <option>BCM</option>
+            <option>SC</option>
+            <option>ST</option>
+            
+            
+        </select>
+        
+        
+        <label for="">Religion</label>  
+        <select class="form-select form-select-sm mb-3" name="rel">
+            <option>Hindu</option>
+            <option>Christian</option>
+            <option>Muslim</option>
+          
+        </select>
+        <label for="">Batch</label>  
+          <select class="form-select form-select-sm mb-3" name="bat" id="bat">
+            
+          </select>
+       
+        <label for="">Image</label>  
+        <input name="img" type="file" class="form-control form-control-sm mb-3">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        
+        
+    </div>
+  </form>
+</div>
+{% include 'footer.html' %}
+{% for msg in messages %}
+<script>
+  alert("{{ msg }}");
+</script>
+{% endfor %}
+<script type="text/javascript">
+    // alert("Welcome")
+    $(document).ready(function() {
+        // console.log("p")
+        $('#course').change(function() {
+            // var course = $(this).attr('course');
+          
+            var course = document.getElementById("course").value
+            
+            console.log("course -"+course)
+  
+                $.ajax({
+                    url: "/checkCourse",
+                    data: {
+                        
+                        'course': course,
+                       
+                        
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        // alert(data.deg)
+                        console.log(data.data)
+                        var opt="<option>-Select-</option>"
+                        for(let i=0;i<data.data.length;i++){
+                            console.log(data.data[i])
+                            opt=opt+"<option>"+data.data[i]+"</option>";
+                        }
+                        document.getElementById("deg").innerHTML=opt;
+                        opt="<option>-Select-</option>"
+                        let k=0;
+                        if(course=="UG")
+                        {
+                            k=3
+                        }
+                        else{
+                            k=2
+                        }
+                        for(let i=2022;i<=2030;i++){
+                            
+                            opt=opt+"<option>"+i+"-"+ (i+k)+"</option>";
+                        }
+                        document.getElementById("bat").innerHTML=opt;
+                    },
+                    error: function(error) {
+                        
+                    }
+                });
+          
+        });
+        $('#deg').change(function() {
+            // var course = $(this).attr('course');
+          
+            var course = document.getElementById("course").value
+            var deg = document.getElementById("deg").value
+            
+            console.log("course -"+course)
+  
+                $.ajax({
+                    url: "/checkDegree",
+                    data: {
+                        
+                        'course': course,
+                        'deg': deg,
+                        
+                       
+                        
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        // alert(data.deg)
+                        console.log(data.data)
+                        var opt="<option>-Select-</option>"
+                        for(let i=0;i<data.data.length;i++){
+                            console.log(data.data[i])
+                            opt=opt+"<option>"+data.data[i]+"</option>";
+                        }
+                        document.getElementById("dept").innerHTML=opt;
+                        if (data.name) {
+                            $('#dept').html('<h3>You selected: ' + data.name + '</h3>');
+                        }
+                    },
+                    error: function(error) {
+                        
+                    }
+                });
+          
+        });
+        
+      });
+  
+  </script>

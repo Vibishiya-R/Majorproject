@@ -1,0 +1,33 @@
+{% include 'header_server.html' %}
+<div class="card-header bg-light"><strong>Add New Degree</strong></div>
+<div class="card-body text-nowrap pt-5">
+
+  <form action="" method="post" enctype="multipart/form-data">
+    {%csrf_token%}
+    <div class="row">
+        <div class="col-lg-6">
+          <label for="">Course</label>  
+          <select class="form-select form-select-sm mb-3" name="course" id="">
+            <option>-Select-</option>
+            
+            <option>UG</option>
+            <option>PG</option>
+            
+          </select>
+          <label for="">Degree</label>  
+         
+          <input type="text"  name="deg" class="form-control form-control-sm mb-3">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        
+        
+        
+    </div>
+  </form>
+</div>
+{% include 'footer.html' %}
+{% for msg in messages %}
+<script>
+  alert("{{ msg }}");
+</script>
+{% endfor %}

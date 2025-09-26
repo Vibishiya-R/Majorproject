@@ -1,0 +1,81 @@
+{% include 'header_server.html' %}
+<div class="card-header bg-light"><strong>Add New Department</strong></div>
+<div class="card-body text-nowrap pt-5">
+
+  <form action="" method="post" enctype="multipart/form-data">
+    {%csrf_token%}
+    <div class="row">
+        <div class="col-lg-6">
+          <label for="">Course</label>  
+          <select id="course" class="course form-select form-select-sm mb-3" name="course"onchange="loadDegrees()"  >
+            <option>-Select-</option>
+            
+            <option>UG</option>
+            <option>PG</option>
+            
+          </select>
+          <label for="">Degree</label>  
+          <select class="form-select form-select-sm mb-3" name="deg" id="deg">
+            
+          </select>
+          <label for="">Department</label>  
+         
+          <input type="text"  name="dept" class="form-control form-control-sm mb-3">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        
+        
+        
+    </div>
+  </form>
+</div>
+{% include 'footer.html' %}
+{% for msg in messages %}
+<script>
+  alert("{{ msg }}");
+</script>
+{% endfor %}
+
+<script type="text/javascript">
+  // alert("Welcome")
+  $(document).ready(function() {
+      // console.log("p")
+      $('.course').change(function() {
+          // var course = $(this).attr('course');
+        
+          var course = document.getElementById("course").value
+          
+          console.log("course -"+course)
+
+              $.ajax({
+                  url: "/checkCourse",
+                  data: {
+                      
+                      'course': course,
+                     
+                      
+                  },
+                  dataType: 'json',
+                  success: function(data) {
+                      // alert(data.deg)
+                      console.log(data.data)
+                      var opt="<option>-Select-</option>"
+                      for(let i=0;i<data.data.length;i++){
+                          console.log(data.data[i])
+                          opt=opt+"<option>"+data.data[i]+"</option>";
+                      }
+                      document.getElementById("deg").innerHTML=opt;
+                      if (data.name) {
+                          $('#deg').html('<h3>You selected: ' + data.name + '</h3>');
+                      }
+                  },
+                  error: function(error) {
+                      
+                  }
+              });
+        
+      });
+      
+    });
+
+</script>

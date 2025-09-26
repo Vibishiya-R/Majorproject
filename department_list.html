@@ -1,0 +1,125 @@
+{% include 'header_server.html' %}
+<style>
+
+  .form-label {
+    display: block;
+    text-align: left;
+    font-size: 14px;
+  }
+</style>
+<div class="card-header bg-light"><strong>Department List</strong></div>
+<div class="card-body text-nowrap pt-5">
+  <form action="" method="post">
+    {%csrf_token%}
+<div class="row justify-content-center mb-4 text-center">
+
+<div class="col-lg-2">
+  <label for="course" class="form-label">Course</label>
+  <select id="course" class="course form-select form-select-sm" name="course" >
+    <option>-Select-</option>
+    
+    <option>UG</option>
+    <option>PG</option>
+    
+  </select>
+</div>
+
+<div class="col-lg-2">
+  <label for="deg" class="form-label">Degree</label>
+  <select class="form-select form-select-sm mb-3" name="deg" id="deg">
+   </select>
+</div>
+<div class="col-lg-2 mt-4">
+   <button type="submit" class="btn btn-warning">Search</button>
+</div>
+
+</div>
+</form>
+ 
+  {% for msg in messages %}
+  <div class="alert alert-success mt-2">
+    {{msg}}
+  </div>
+  {% endfor %}
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Course</th>
+            <th>Degree</th>
+            <th>Department</th>
+            
+            <th>Date/Time</th>
+           
+          </tr>
+        </thead>
+        <tbody>
+          {% for ob in frm %}
+          <tr>
+          <td>{{forloop.counter}}</td>
+          
+          <td>{{ob.course}}</td>
+          <td>{{ob.deg}}</td>
+          <td>{{ob.dept}}</td>
+          
+          <td>{{ob.dt}}</td>
+          <td>
+            <a class="badge bg-success" href="/departmentUpdate/{{ob.id}}">Update</a>
+           </td>
+          <td>
+          <a class="badge bg-danger" href="/departmentDelete/{{ob.id}}">Delete</a>
+         </td>
+        </tr>
+         {%endfor%}
+        </tbody>
+    </table>
+    </div>
+</div>
+
+
+{% include 'footer.html' %}
+{% include 'footer.html' %}
+<script type="text/javascript">
+  // alert("Welcome")
+  $(document).ready(function() {
+      // console.log("p")
+      $('.course').change(function() {
+          // var course = $(this).attr('course');
+        
+          var course = document.getElementById("course").value
+          
+          console.log("course -"+course)
+
+              $.ajax({
+                  url: "/checkCourse",
+                  data: {
+                      
+                      'course': course,
+                     
+                      
+                  },
+                  dataType: 'json',
+                  success: function(data) {
+                      // alert(data.deg)
+                      console.log(data.data)
+                      var opt="<option>-Select-</option>"
+                      for(let i=0;i<data.data.length;i++){
+                          console.log(data.data[i])
+                          opt=opt+"<option>"+data.data[i]+"</option>";
+                      }
+                      document.getElementById("deg").innerHTML=opt;
+                      if (data.name) {
+                          $('#deg').html('<h3>You selected: ' + data.name + '</h3>');
+                      }
+                  },
+                  error: function(error) {
+                      
+                  }
+              });
+        
+      });
+      
+    });
+
+</script>

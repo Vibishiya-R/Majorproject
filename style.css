@@ -1,0 +1,44 @@
+ .fa-pen-to-square, .fa-trash-can, .fa-regular{
+      font-size: 20px;
+  }
+.fa-trash-can
+{
+    color:red;
+    
+  }
+ 
+  .fa-pen-to-square, .fa-eye{
+    color:green;
+    
+  }
+  .fa-binoculars{
+    color:rgb(206, 128, 2);
+    font-size: 20px;
+  }
+  .link1{
+      color:green!important;
+      font-size: 17px;
+  }
+  .link1:hover{
+      color:red!important;
+      
+  }
+  .label{
+    margin-top: 15px!important;
+    color: #0f0f0f!important;
+    font-size: 15px!important;
+    font-weight: 600;
+  }
+  
+/*  .card-title{
+      color:white!important;
+  }*/
+  .borderStyle{
+    border-top-style: none;
+border-right-style: none;
+border-bottom-style: none;
+border-left-style: solid;
+    border-color: #d30094;
+    border-width: 5px;
+    border-radius: 10px;
+}

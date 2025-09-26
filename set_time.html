@@ -1,0 +1,26 @@
+{% include 'header_server.html' %}
+<div class="card-header bg-light"><strong>Set Time</strong></div>
+<div class="card-body text-nowrap pt-5">
+
+  <form action="" method="post" enctype="multipart/form-data">
+    {%csrf_token%}
+    <div class="row">
+        <div class="col-lg-6">
+          
+          <label for="">Set Time</label>  
+         
+          <input type="time"  name="tm" class="form-control form-control-sm mb-3">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        
+        
+        
+    </div>
+  </form>
+</div>
+{% include 'footer.html' %}
+{% for msg in messages %}
+<script>
+  alert("{{ msg }}");
+</script>
+{% endfor %}

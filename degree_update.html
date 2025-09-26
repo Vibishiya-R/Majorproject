@@ -1,0 +1,66 @@
+{% include 'header_server.html' %}
+
+<div class="card-header bg-light"><strong>Update Degree Details</strong></div>
+<div class="card-body text-nowrap pt-5">
+  <form action="" method="post">
+    {% csrf_token %}
+    
+    <div class="row">
+        <div class="col-lg-6">
+           
+
+            <!-- Course Selection -->
+            <label for="course">Course</label>
+            <select class="form-select form-select-sm mb-3" name="course" id="course">
+                <option selected>{{ ob.course }}</option>
+                <option>UG</option>
+                <option>PG</option>
+            </select>
+
+            <!-- Degree Selection (Allow Dropdown & Manual Entry) -->
+            <label for="deg">Degree</label>
+            <input list="degreeList" class="form-control" name="deg" id="deg" value="{{ ob.deg }}" required>
+            <datalist id="degreeList">
+                <option selected>{{ ob.deg }}</option>
+            </datalist>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary">Update Degree</button>
+        </div>
+    </div>
+  </form>
+</div>
+
+{% include 'footer.html' %}
+
+<!-- Handle Messages -->
+{% for msg in messages %}
+<script>
+  alert("{{ msg }}");
+</script>
+{% endfor %}
+
+<!-- jQuery Script for Dynamic Degree Fetching -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#course').change(function() {
+            var course = document.getElementById("course").value;
+
+            console.log("Selected Course: " + course);
+
+            $.ajax({
+                url: "/checkCourse",
+                data: { 'course': course },
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data.data);
+                    var opt = "<option selected>" + $('#deg').val() + "</option>"; // Preserve previous value
+                    for (let i = 0; i < data.data.length; i++) {
+                        opt += "<option>" + data.data[i] + "</option>";
+                    }
+                    document.getElementById("degreeList").innerHTML = opt;
+                }
+            });
+        });
+    });
+</script>

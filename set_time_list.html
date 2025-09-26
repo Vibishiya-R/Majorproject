@@ -1,0 +1,40 @@
+{% include 'header_server.html' %}
+<style>
+
+
+</style>
+<div class="card-header bg-light"><strong>Time</strong></div>
+<div class="card-body text-nowrap pt-5">
+  {% for msg in messages %}
+  <div class="alert alert-success mt-2">
+    {{msg}}
+  </div>
+  {% endfor %}
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Time</th>
+            
+           
+          </tr>
+        </thead>
+        <tbody>
+          {% for ob in frm %}
+          <tr>
+          <td>{{forloop.counter}}</td>
+          
+          <td>{{ob.tm}}</td>
+          <td>
+            <a class="badge bg-danger" href="/timeDelete/{{ob.id}}">Delete</a>
+           </td>
+        </tr>
+         {%endfor%}
+        </tbody>
+    </table>
+    </div>
+</div>
+
+
+{% include 'footer.html' %}

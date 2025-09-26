@@ -1,0 +1,48 @@
+{% include 'header_server.html' %}
+<style>
+
+
+</style>
+<div class="card-header bg-light"><strong>Degree List</strong></div>
+<div class="card-body text-nowrap pt-5">
+  {% for msg in messages %}
+  <div class="alert alert-success mt-2">
+    {{msg}}
+  </div>
+  {% endfor %}
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Course</th>
+            <th>Degree</th>
+            <th>Date/Time</th>
+           
+          </tr>
+        </thead>
+        <tbody>
+          {% for ob in frm %}
+          <tr>
+          <td>{{forloop.counter}}</td>
+          
+          <td>{{ob.course}}</td>
+          <td>{{ob.deg}}</td>
+          <td>{{ob.dt}}</td>
+        
+          <td>
+            <a class="badge bg-success" href="/degreeUpdate/{{ob.id}}">Update</a>
+          </td>
+          <td>
+            <a class="badge bg-danger" href="/degreeDelete/{{ob.id}}">Delete</a>
+          
+         </td>
+        </tr>
+         {%endfor%}
+        </tbody>
+    </table>
+    </div>
+</div>
+
+
+{% include 'footer.html' %}
